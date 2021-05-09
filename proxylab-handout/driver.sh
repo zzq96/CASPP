@@ -19,7 +19,7 @@ MAX_CACHE=15
 HOME_DIR=`pwd`
 PROXY_DIR="./.proxy"
 NOPROXY_DIR="./.noproxy"
-TIMEOUT=5
+TIMEOUT=10
 MAX_RAND=63000
 PORT_START=1024
 PORT_MAX=65000
@@ -221,7 +221,8 @@ wait_for_port_use "${tiny_port}"
 # Run the proxy
 proxy_port=$(free_port)
 echo "Starting proxy on ${proxy_port}"
-./proxy ${proxy_port}  &> /dev/null &
+./proxy ${proxy_port}  &> ./out &
+# ./proxy ${proxy_port}  &> /dev/null &
 proxy_pid=$!
 
 # Wait for the proxy to start in earnest
@@ -289,7 +290,8 @@ wait_for_port_use "${tiny_port}"
 # Run the proxy
 proxy_port=$(free_port)
 echo "Starting proxy on port ${proxy_port}"
-./proxy ${proxy_port} &> /dev/null &
+./proxy ${proxy_port}  &>> ./out &
+# ./proxy ${proxy_port} &> /dev/null &
 proxy_pid=$!
 
 # Wait for the proxy to start in earnest
@@ -298,7 +300,7 @@ wait_for_port_use "${proxy_port}"
 # Run a special blocking nop-server that never responds to requests
 nop_port=$(free_port)
 echo "Starting the blocking NOP server on port ${nop_port}"
-./nop-server.py ${nop_port} &> /dev/null &
+./nop-server.py ${nop_port} &>> ./out &
 nop_pid=$!
 
 # Wait for the nop server to start in earnest
